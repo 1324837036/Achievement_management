@@ -1,19 +1,41 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <router-view> </router-view>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+  name: "App",
+  data() {
+    return {
+      form: {
+        scholarName: "",
+        orgName: "",
+      },
+      datas: [],
+    };
+  },
+  components: {},
+  methods: {
+    getstaff() {
+      var url = "/v1/scholars/getScholarByName/?scholarName=";
+
+      url = url + this.form.scholarName + "&orgName=" + this.form.orgName;
+
+      this.$axios
+        .get(url)
+        .then((response) => {
+          this.datas = response.data.data;
+          console.log(response);
+        })
+        .catch((error) => {
+          console.log("抱歉，失败啦");
+          console.log(error);
+        });
+    },
+  },
+};
 </script>
 
 <style>
@@ -24,5 +46,10 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+
+body {
+  margin: 0;
+  padding: 0;
 }
 </style>
